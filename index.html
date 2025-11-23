@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎃 Ghoul Swap Form</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('https://res.cloudinary.com/eventmobi/image/upload/v1761237992/_James%20Assets/.test%20app%20assets/Abstract%20Backgrounds/Haunted%20Background/2151153754.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      color: white;
+      margin-bottom: 25px;
+      margin-top: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background: rgba(0, 0, 0, 0.65);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9em;
+    }
+
+    button {
+      background: #ff4b4b;
+      color: #fff;
+      border: none;
+      padding: 12px 16px;
+      font-size: 1em;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #ff2222;
+      transform: scale(1.02);
+    }
+
+    .admin-login {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 75, 75, 0.6);
+      cursor: pointer;
+      font-size: 0.85em;
+      transition: 0.3s ease;
+      z-index: 9999;
+      text-shadow: 0 0 6px rgba(255,255,255,0.5);
+    }
+
+    .admin-login:hover {
+      background: rgba(255, 75, 75, 0.9);
+      color: #fff;
+      text-shadow: 0 0 8px #fff;
+      transform: scale(1.05);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9998;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: rgba(0,0,0,0.9);
+      padding: 30px 40px;
+      border-radius: 15px;
+      text-align: center;
+      color: #fff;
+      font-size: 1.1em;
+      max-width: 400px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9);} 
+      to { opacity: 1; transform: scale(1);} 
+    }
+  </style>
+</head>
+<body>
+
+  <h1>👻 Ghoul Swap Form</h1>
+
+  <div class="container">
+    <form id="ghoulForm">
+      <input name="realName" placeholder="Real Name*" required>
+      <input name="codeName" placeholder="Code Name*" required>
+      <input name="gender" placeholder="Gender*" required>
+      <input name="wish1" placeholder="Wish Item 1">
+      <input name="wish2" placeholder="Wish Item 2">
+      <input name="wish3" placeholder="Wish Item 3">
+      <button type="submit">Submit Swap Gift Entry</button>
+    </form>
+  </div>
+
+  <div class="admin-login" id="adminLogin">🔑 Admin</div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content" id="modalContent">Saving your entry… don’t wake the spirits 👻</div>
+  </div>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxXeDNBzY8kOLAAa4hgnax6HYAJPBekCi8fYnwVzdkqs6v8nKKmuIWStM-fVIqXbpmYeg/exec';
+    const form = document.getElementById('ghoulForm');
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modalContent');
+    const adminLogin = document.getElementById('adminLogin');
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      modal.style.display = 'flex';
+      modalContent.textContent = 'Saving your entry… don’t wake the spirits 👻';
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch(scriptURL, { method: 'POST', body: formData });
+        const text = await response.text();
+
+        if (text.trim() === 'Success') {
+          modalContent.textContent = '🕸️ Your entry has been saved!';
+          form.reset();
+        } else {
+          throw new Error(text);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        modalContent.textContent = '⚠️ Something went wrong. Please try again.';
+      } finally {
+        setTimeout(() => (modal.style.display = 'none'), 2500);
+      }
+    });
+
+    adminLogin.addEventListener('click', () => {
+      const password = prompt('Enter Admin Password:');
+      if (password === 'escape2025') {
+        window.open('https://docs.google.com/spreadsheets/d/124LIz_k7aQ3u3Z8Om_PZnb9mxkeZtHAPsPSce2bpPl0/edit?gid=0#gid=0', '_blank');
+      } else if (password) {
+        alert('❌ Wrong password, spirit denied access!');
+      }
+    });
+  </script>
+
+</body>
+</html>
