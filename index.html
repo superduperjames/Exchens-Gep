@@ -220,7 +220,7 @@
     form.addEventListener('submit', async e => {
       e.preventDefault();
       modal.style.display = 'flex';
-      modalContent.textContent = 'Saving your entry… don’t wake the spirits 👻';
+      modalContent.textContent = 'Saving your entry…';
 
       const formData = new FormData(form);
 
@@ -229,7 +229,7 @@
         const text = await response.text();
 
         if (text.trim() === 'Success') {
-          modalContent.textContent = '🕸️ Your entry has been saved!';
+          modalContent.textContent = 'Your entry has been saved!';
           form.reset();
         } else {
           throw new Error(text);
@@ -244,7 +244,7 @@
 
     adminLogin.addEventListener('click', () => {
       const password = prompt('Enter Admin Password:');
-      if (password === 'escape2025') {
+      if (password === 'gips2025') {
         window.open('https://docs.google.com/spreadsheets/d/124LIz_k7aQ3u3Z8Om_PZnb9mxkeZtHAPsPSce2bpPl0/edit?gid=0#gid=0', '_blank');
       } else if (password) {
         alert('❌ Wrong password, spirit denied access!');
